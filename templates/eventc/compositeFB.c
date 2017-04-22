@@ -4,16 +4,7 @@
 // This file represents the implementation of the Composite Function Block for {{$block.Name}}
 #include "{{$block.Name}}.h"
 
-//When running a composite block, note that you would call the functions in this order (and this is very important)
-//_preinit(); 
-//_init();
-//do {
-//	_syncOutputEvents();
-//	_syncInputEvents();
-//	_syncOutputData();
-//	_syncInputData();
-//	_run();
-//} loop;
+//TODO: replace composite function blocks with event invokation functions 
 
 {{template "_fbinit" .}}
 

@@ -5,6 +5,16 @@
 
 #include "{{$block.Name}}.h"
 
+//TODO: replace all this with an invocation queue
+
+//there will also be the emit function definition 
+
+//the emit function will take an event ID and place the appropriate invocations onto the invocation queue
+
+//when an event is consumed from the queue, its event function will be called
+
+//data will be stored in the network and updated as necessary by event functions
+
 //put a copy of the top level block into global memory
 {{$block.Name}}_t my{{$block.Name}};
 

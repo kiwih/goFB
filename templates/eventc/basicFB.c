@@ -30,6 +30,8 @@ void {{$block.Name}}_run({{$block.Name}}_t {{if or $tcrestUsingSPM $tcrestSmartS
 	{{if $block.EventOutputs}}{{range $index, $event := $block.EventOutputs.Events}}me->outputEvents.event.{{$event.Name}} = 0;
 	{{end}}{{end}}
 
+	//TODO: change this to the correct ECC logic
+
 	//next state logic
 	if(me->_trigger == false) {
 		switch(me->_state) {
