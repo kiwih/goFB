@@ -11,11 +11,45 @@
 
 //the emit function will take an event ID and place the appropriate invocations onto the invocation queue
 
-//when an event is consumed from the queue, its event function will be called
-
-//data will be stored in the network and updated as necessary by event functions
-
 //put a copy of the top level block into global memory
+
+/* event_[ID]_run() executes a single event from the event
+ * queue. Notice that it does not perform any computation nor create any 
+ * additional events.
+ */
+void event_{{$eventID}}_run({{$block.Type}}_t *me) {
+	//for every eventID
+		//for every block this invokes
+			//set input event flag
+			//copy associated input data from source data
+			//invoke function using x_instance_x_run() function
+				//enqueue emitted events
+}
+
+{{/* We need to know about every instance of every fb in the network 
+   * so that we can create their invokation function.
+   * Invokation functions are necessary so that we can enqueue events that they emit
+   */}}
+
+//for every block inside this block
+	//if composite, recurse
+	//if basic, create invokation function
+
+{{range $currChildIndex, $child := $block.CompositeFB.FBs}}
+/* {{$block.Name}}_instance_{{$child.Name}}_run() executes a single invokation of 
+ * {{$child.Name}} (which is an instance of {{$child.Type}}) according to 
+ * IEC61499 event-driven semantics.
+ * Notice that it does NOT perform any I/O - synchronisation
+ * is done using the event function at this level.
+ */
+void {{$block.Name}}_instance_{{$child.Name}}_run({{$child.Type}}_t *inst, int eventID) {
+
+}
+
+
+
+
+
 {{$block.Name}}_t my{{$block.Name}};
 
 int main() {

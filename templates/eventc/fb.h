@@ -7,14 +7,6 @@
 
 #include "fbtypes.h"
 
-{{if .CvodeEnabled}}{{if blockNeedsCvode $block}}
-#include "cvode/cvode.h"
-#include "nvector/nvector_serial.h"
-#include "cvode/cvode_dense.h"
-#include "sundials/sundials_dense.h"
-#include "sundials/sundials_types.h"
-{{end}}{{end}}
-
 {{if $block.CompositeFB}}//This is a CFB, so we need the #includes for the child blocks embedded here
 {{range $currChildIndex, $child := $block.CompositeFB.FBs}}#include "{{$child.Type}}.h"
 {{end}}{{end}}{{if $block.BasicFB}}//This is a BFB, so we need an enum type for the state machine
@@ -69,13 +61,6 @@ typedef struct {
 	//state and trigger (BFBs only)
 	{{if $block.BasicFB}}enum {{$block.Name}}_states _state; //stores current state
 	BOOL _trigger; //indicates if a state transition has occured this tick
-	{{if .CvodeEnabled}}{{if blockNeedsCvode $block}}//this block uses cvode
-	void *cvode_mem;
-	N_Vector ode_solution;
-	realtype T0;
-	realtype Tnext;
-	realtype Tcurr;
-	{{end}}{{end}}
 
 	{{end}}
 } {{$block.Name}}_t;

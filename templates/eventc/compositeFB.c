@@ -94,21 +94,6 @@ void {{$block.Name}}_syncInputData({{$block.Name}}_t {{if .TcrestUsingSPM}}_SPM{
 }
 
 
-/* {{$block.Name}}_run() executes a single tick of an
- * instance of {{$block.Name}} according to synchronise semantics.
- * Notice that it does NOT perform any I/O - synchronisation
- * is done using the _syncX functions at this (and any higher) level.
- */
-void {{$block.Name}}_run({{$block.Name}}_t {{if .TcrestUsingSPM}}_SPM{{end}} *me) {
-	{{range $currChildIndex, $child := $block.CompositeFB.FBs}}{{if $tcrestSmartSPM}}{{$childType := findBlockDefinitionForType $blocks $child.Type}}{{if $childType.BasicFB}}//Next block is BFB so we'll copy to SPM first
-	{{$child.Type}}_t _SPM *{{$child.Name}}_spm = SPM_BASE;
-	spm_copy_from_ext({{$child.Name}}_spm, &me->{{$child.Name}}, sizeof({{$child.Type}}_t));
-	{{$child.Type}}_run({{$child.Name}}_spm);
-	spm_copy_to_ext(&me->{{$child.Name}}, {{$child.Name}}_spm, sizeof({{$child.Type}}_t));
-	
-	{{else}}{{$child.Type}}_run(&me->{{$child.Name}});
-	{{end}}{{else}}{{$child.Type}}_run(&me->{{$child.Name}});
-	{{end}}{{end}}
-}
+{{end}}
 
 {{end}}
