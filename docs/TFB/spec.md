@@ -247,7 +247,7 @@ architecture of PaceEnforcer {
 
 	//P1: AP and VP cannot happen simultaneously.
 	policy {
-		require (AP && VP != 1)
+		require (AP && VP == 0)
 		recover `
 			VP = 0; //set both to be zero
 			AP = 0; //could be either really, but as it's a bad order, we'll cancel both, and rely on subsequent enforcers to correct
@@ -279,8 +279,8 @@ architecture of PaceEnforcer {
 	//P4: After a ventricular event, another ventricular event can happen only after URI.
 	policy {
 		observe (VS || VP == 1) {
-			require (VS || VP != 1)
-			before (URI_time)
+			require (VS || VP == 0)
+			until (URI_time)
 			recover `
 				VP = 0; //cancel pulsing the heart VP
 			`;
