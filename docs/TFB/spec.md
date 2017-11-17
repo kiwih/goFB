@@ -298,22 +298,22 @@ architecture of PaceEnforcer {
 		}
 	}
 
-	//P6: (fabricated) VP can only be asserted for VPHigh time units.
+	//P6: (fabricated) VP must be asserted for VPHigh time units.
 	policy {
 		observe (VP == 1) {
-			require (VP == 0)
-			before (VPHigh_time)
+			require (VP == 1)
+			until (VPHigh_time)
 			recover `
-				VP = 0; //deassert the heart VP
+				VP = 0; //keep the heart VP asserted
 			`;
 		}
 	}
 	
-	//P7: (fabricated) AP can only be asserted for APHigh time units.
+	//P7: (fabricated) AP must be asserted for APHigh time units.
 	policy {
 		observe (AP == 1) {
-			require (AP == 0)
-			before (APHigh_time)
+			require (AP == 1)
+			until (APHigh_time)
 			recover `
 				AP = 0; //deassert the heart AP
 			`;
