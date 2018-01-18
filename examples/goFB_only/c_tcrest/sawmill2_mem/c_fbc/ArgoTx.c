@@ -19,6 +19,9 @@ void ArgoTxrun(ArgoTx* me)
 
     if (me->_input.event.DataPresent) {
         me->Data = me->_Data;
+        HEX = me->Data;
+        me->_output.event.SuccessChanged = 1;
+        me->Success = 1;
     }
     // State: Start
     if (!me->_entered) {

@@ -15,12 +15,12 @@ void MaskedSwitchinit(MaskedSwitch* me)
 /* ECC algorithms */
 void MaskedSwitch_SwitchesService(MaskedSwitch* me)
 {
-int m = (SWITCHES & me->SwitchMask) != 0;
+int m = (SWITCHES & me->_SwitchMask) != 0;
 if(m != me->SwitchOn) {
 	//switch is pressed
 	me->SwitchOn = m;
 	me->_output.event.SwitchChanged = 1;
-}
+} 
 }
 
 /* Function block execution function */
