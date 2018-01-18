@@ -14,6 +14,10 @@ void c0__Core0init(c0__Core0* me)
     me->saw1rx._ChanId = 1;
     me->saw2rx._ChanId = 2;
     me->saw3rx._ChanId = 3;
+
+    ArgoRxchaninit(&me->saw1rx);
+    ArgoRxchaninit(&me->saw2rx);
+    ArgoRxchaninit(&me->saw3rx);
 }
 
 /* Function block execution function */

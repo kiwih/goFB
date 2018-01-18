@@ -11,18 +11,39 @@ void ArgoRxinit(ArgoRx* me)
     me->_output.events = 0;
 }
 
+int ArgoRxchaninit(ArgoRx* me)
+{
+    me->chan = mp_create_qport(me->_ChanId, SINK, sizeof(INT), 1);
+	if(me->chan == NULL) {
+		return 1;
+	} 
+	return 0;
+}
+
 /* Function block execution function */
 void ArgoRxrun(ArgoRx* me)
 {
     me->_output.events = 0;
+    
+    if(me->needToAck == true) {
+		if(!mp_nback(me->chan)) {
+			return;
+		}	
+	}
+	me->needToAck = false;
 
-    // State: Start
-    if (!me->_entered) {
-        me->_entered = true;
-    }
-    if (me->_output.event.DataPresent) {
-        me->_Data = me->Data;
-    }
+	if(mp_nbrecv(me->chan)) {
+		me->needToAck = true;
+		me->_Data = *((volatile INT _SPM*)me->chan->read_buf);
+		
+		//printf("chan %i recieved %i\n", me->ChanId, me->Data);
+
+		if(mp_nback(me->chan)) {
+			me->needToAck = false;
+		}
+		
+		me->_output.event.DataPresent = 1;
+	}
 
 }
 

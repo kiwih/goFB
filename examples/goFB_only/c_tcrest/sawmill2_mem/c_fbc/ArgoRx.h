@@ -20,10 +20,16 @@ typedef struct {
     ArgoRxOEvents _output;
     INT Data; // 
     INT _Data;
+
+    qpd_t* chan;
+    BOOL needToAck;
 } ArgoRx;
 
 /* Function block initialization function */
 void ArgoRxinit(ArgoRx* me);
+
+/* Argo Function block channel init function */
+int ArgoRxchaninit(ArgoRx* me);
 
 /* Function block execution function */
 void ArgoRxrun(ArgoRx* me);

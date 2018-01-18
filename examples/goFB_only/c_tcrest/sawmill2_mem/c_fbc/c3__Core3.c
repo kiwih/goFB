@@ -11,6 +11,8 @@ void c3__Core3init(c3__Core3* me)
     SawmillMessageHandlerinit(&me->messageHandler);
     SawmillModuleinit(&me->sawmill);
     me->tx._ChanId = 3;
+
+    ArgoTxchaninit(&me->tx);
 }
 
 /* Function block execution function */

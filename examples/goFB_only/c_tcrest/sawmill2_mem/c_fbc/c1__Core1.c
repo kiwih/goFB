@@ -11,6 +11,8 @@ void c1__Core1init(c1__Core1* me)
     SawmillMessageHandlerinit(&me->messageHandler);
     ArgoTxinit(&me->tx);
     me->tx._ChanId = 1;
+    
+    ArgoTxchaninit(&me->tx);
 }
 
 /* Function block execution function */

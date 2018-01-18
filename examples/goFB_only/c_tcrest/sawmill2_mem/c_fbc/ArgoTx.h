@@ -30,10 +30,15 @@ typedef struct {
     ArgoTxOEvents _output;
     BOOL Success; // 
     BOOL _Success;
+
+    qpd_t* chan;
 } ArgoTx;
 
 /* Function block initialization function */
 void ArgoTxinit(ArgoTx* me);
+
+/* Argo Function block channel initialization function */
+int ArgoTxchaninit(ArgoTx* me);
 
 /* Function block execution function */
 void ArgoTxrun(ArgoTx* me);
