@@ -4,8 +4,8 @@ TCRESTLINKDIR?=$(TCRESTHOMEDIR)/patmos/tmp
 TCRESTNOCINIT?=$(TCRESTHOMEDIR)/patmos/c/cmp/nocinit.c
 FBINCLUDEDIR?=./include
 
-PROJECT?=bottlingplant
-FUNCTION?=main
+PROJECT?=sawmill2_mem
+FUNCTION?=timed_task
 
 BUILDDIR?=../tmp
 LIBNOC=$(BUILDDIR)/libnoc.a
@@ -23,9 +23,9 @@ B_SIZE?=16
 
 PROGS_PER_CORE?=1
 
-C_DIR?=c
+C_DIR?=c_fbc
 
-$(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT).elf: ./$(PROJECT)/c/*.c ./$(PROJECT)/c/*.h
+$(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)_$(C_DIR).elf: ./$(PROJECT)/$(C_DIR)/*.c ./$(PROJECT)/$(C_DIR)/*.h
 	patmos-clang \
 	-target patmos-unknown-unknown-elf \
 	-O2 \
@@ -40,7 +40,7 @@ $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT).elf: ./$(PROJECT)/c/*.c ./$(PROJECT)/c/*.
 	-Xgold --defsym -Xgold __heap_end=0x1f0000 \
 	-Xgold -T \
 	-Xgold $(TCRESTHOMEDIR)/patmos/hardware/spm_ram.t \
-	-o $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT).elf \
+	-o $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)_$(C_DIR).elf \
 	./$(PROJECT)/$(C_DIR)/*.c \
 	$(TCRESTNOCINIT) \
 	-L $(TCRESTLINKDIR) \
@@ -50,29 +50,29 @@ $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT).elf: ./$(PROJECT)/c/*.c ./$(PROJECT)/c/*.
 	-leth \
 	-lelf \
 	-D PROGS_PER_CORE=$(PROGS_PER_CORE) \
-	-mserialize=$(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT).pml
+	-mserialize=$(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)_$(C_DIR).pml
 
-build: $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT).elf
+build: $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)_$(C_DIR).elf
 	
 wcet-config: 
 	platin pml-config \
 	--target patmos-unknown-unknown-elf \
-	-o $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)config.pml \
+	-o $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)_$(C_DIR)config.pml \
 	--tdelay $(T_DELAY_CYCLES) \
 	--gtime $(G_DELAY_CYCLES) \
 	--bsize $(B_SIZE)
 
 wcet: build wcet-config
 	platin wcet \
-	-i $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT).pml \
+	-i $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)_$(C_DIR).pml \
 	--enable-wca \
 	--disable-ait \
 	--stats \
-	--binary $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT).elf \
+	--binary $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)_$(C_DIR).elf \
 	-e $(FUNCTION) \
 	-o $(PROJECT).wca \
 	--report $(PROJECT)_wcet_report.txt \
-	-i $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)config.pml
+	-i $(TCRESTHOMEDIR)/patmos/tmp/$(PROJECT)_$(C_DIR)config.pml
 
 c:	
 	cd $(PROJECT); bash fbt_to_c.sh
