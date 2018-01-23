@@ -110,6 +110,7 @@ void PrintStatusrun(PrintStatus* me)
         me->Saw2Status = me->_Saw2Status;
         me->Saw3Status = me->_Saw3Status;
     }
+    #pragma loopbound min 1 max 2
     for (;;) {
         if (me->_state == 0) {
             // State: Start
